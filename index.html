@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Новогоднее пожелание</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     * {
       margin: 0;
@@ -11,13 +12,68 @@
       box-sizing: border-box;
     }
 
+    html, body {
+      height: 100%;
+      overflow: hidden; /* скрываем скролл всей страницы */
+    }
+
     body {
-      background: #a0cfff; /* Насыщенный голубой */
+      background: #a0cfff;
       font-family: 'Georgia', serif;
-      min-height: 100vh;
-      overflow: hidden;
       position: relative;
       color: #003366;
+    }
+
+    /* Основной скроллируемый контейнер */
+    #content {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      overflow: hidden;
+      z-index: 20;
+    }
+
+    h1 {
+      text-align: center;
+      padding: 15px 0;
+      font-size: 2.2em;
+      color: #FFD700;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+      font-weight: bold;
+      margin: 10px 0;
+    }
+
+    /* Обёртка для пожелания с прокруткой */
+    #wish-container {
+      width: 90%;
+      max-width: 800px;
+      max-height: calc(100vh - 200px); /* оставляем место для заголовка и отступов */
+      background: rgba(255, 255, 255, 0.65);
+      border-radius: 16px;
+      backdrop-filter: blur(4px);
+      padding: 25px;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch; /* плавный скролл на iOS */
+      text-align: center;
+      font-size: 1.6em;
+      line-height: 1.5;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    /* Стиль скроллбара (для десктопа) */
+    #wish-container::-webkit-scrollbar {
+      width: 8px;
+    }
+    #wish-container::-webkit-scrollbar-track {
+      background: rgba(255,255,255,0.3);
+      border-radius: 4px;
+    }
+    #wish-container::-webkit-scrollbar-thumb {
+      background: #FFD700;
+      border-radius: 4px;
     }
 
     .garland {
@@ -59,67 +115,29 @@
       box-shadow: 0 0 6px 2px white;
     }
 
-    @keyframes blink-red {
-      0%, 40% { background: white; box-shadow: 0 0 6px 2px white; }
-      50%, 100% { background: #ff3333; box-shadow: 0 0 10px 4px #ff3333; }
-    }
-    @keyframes blink-green {
-      0%, 40% { background: white; box-shadow: 0 0 6px 2px white; }
-      50%, 100% { background: #33cc33; box-shadow: 0 0 10px 4px #33cc33; }
-    }
-    @keyframes blink-yellow {
-      0%, 40% { background: white; box-shadow: 0 0 6px 2px white; }
-      50%, 100% { background: #ffcc00; box-shadow: 0 0 10px 4px #ffcc00; }
-    }
-    @keyframes blink-blue {
-      0%, 40% { background: white; box-shadow: 0 0 6px 2px white; }
-      50%, 100% { background: #3366ff; box-shadow: 0 0 10px 4px #3366ff; }
-    }
+    @keyframes blink-red { 0%,40%{background:white;box-shadow:0 0 6px 2px white;} 50%,100%{background:#ff3333;box-shadow:0 0 10px 4px #ff3333;} }
+    @keyframes blink-green { 0%,40%{background:white;box-shadow:0 0 6px 2px white;} 50%,100%{background:#33cc33;box-shadow:0 0 10px 4px #33cc33;} }
+    @keyframes blink-yellow { 0%,40%{background:white;box-shadow:0 0 6px 2px white;} 50%,100%{background:#ffcc00;box-shadow:0 0 10px 4px #ffcc00;} }
+    @keyframes blink-blue { 0%,40%{background:white;box-shadow:0 0 6px 2px white;} 50%,100%{background:#3366ff;box-shadow:0 0 10px 4px #3366ff;} }
 
     .bulb.red { animation: blink-red 1.8s infinite alternate; }
     .bulb.green { animation: blink-green 1.8s infinite alternate; }
     .bulb.yellow { animation: blink-yellow 1.8s infinite alternate; }
     .bulb.blue { animation: blink-blue 1.8s infinite alternate; }
 
-    h1 {
-      text-align: center;
-      padding: 25px 0;
-      font-size: 2.8em;
-      color: #FFD700; /* Золотой */
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-      font-weight: bold;
-      z-index: 20;
-      margin-top: 10px;
-    }
-
-    #wish {
-      text-align: center;
-      font-size: 1.7em;
-      line-height: 1.6;
-      max-width: 85%;
-      margin: 0 auto;
-      padding: 30px;
-      background: rgba(255, 255, 255, 0.65);
-      border-radius: 16px;
-      backdrop-filter: blur(4px);
-      z-index: 20;
-    }
-
     .snowflake {
       position: absolute;
       top: -20px;
       color: white;
       font-size: 1.2em;
-      text-shadow: 0 0 5px rgba(255, 255, 255, 0.9);
+      text-shadow: 0 0 5px rgba(255,255,255,0.9);
       user-select: none;
       z-index: 5;
       animation: fall linear forwards;
     }
 
     @keyframes fall {
-      to {
-        transform: translateY(105vh) rotate(360deg);
-      }
+      to { transform: translateY(105vh) rotate(360deg); }
     }
 
     #error {
@@ -127,11 +145,31 @@
       padding: 40px;
       color: #d00;
       font-size: 1.4em;
-      z-index: 20;
+      max-width: 80%;
+      margin: 0 auto;
+    }
+
+    #sound-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      font-size: 1.8em;
+      color: #FFD700;
+      cursor: pointer;
+      z-index: 30;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
     }
   </style>
 </head>
 <body>
+  <audio id="bg-music" loop preload="auto">
+    <source src="https://cdn.pixabay.com/download/audio/2022/01/18/audio_8d5b6a0c8c.mp3?filename=jingle-bells-123112.mp3" type="audio/mpeg">
+  </audio>
+
+  <div id="sound-toggle">
+    <i class="fas fa-volume-up"></i>
+  </div>
+
   <div class="garland">
     <div class="top-lights" id="top"></div>
     <div class="bottom-lights" id="bottom"></div>
@@ -139,12 +177,15 @@
     <div class="right-lights" id="right"></div>
   </div>
 
-  <h1>С Новым годом!</h1>
-  <div id="wish"></div>
-  <div id="error" style="display: none;"></div>
+  <div id="content">
+    <h1>С Новым годом!</h1>
+    <div id="wish-container"></div>
+    <div id="error" style="display:none;"></div>
+  </div>
 
   <script>
     const COLORS = ['red', 'green', 'yellow', 'blue'];
+    let musicPlayed = false;
 
     function createBulbs(container, count) {
       for (let i = 0; i < count; i++) {
@@ -179,34 +220,26 @@
 
     async function loadWish() {
       const urlParams = new URLSearchParams(window.location.search);
-      const id = parseInt(urlParams.get('id'), 10);
-
-      if (!id || id < 1) {
-        document.getElementById('error').textContent = '❌ Неверный номер пожелания';
-        document.getElementById('error').style.display = 'block';
-        return;
-      }
+      const idParam = parseInt(urlParams.get('id'), 10);
+      const wishId = idParam && idParam >= 1 ? idParam : 1;
 
       try {
-        // Добавляем timestamp, чтобы обойти кэш при обновлении wishes.txt
         const response = await fetch('wishes.txt?' + Date.now());
         if (!response.ok) throw new Error('Файл wishes.txt не найден');
         const text = await response.text();
 
-        // Разделяем по строке из 3+ дефисов на отдельной строке
         const wishes = text
           .split(/^-{3,}$/m)
           .map(w => w.trim())
           .filter(w => w !== '');
 
-        if (id > wishes.length) {
-          document.getElementById('error').textContent = `❌ Пожелание №${id} ещё не добавлено`;
+        if (wishId > wishes.length) {
+          document.getElementById('error').textContent = `❌ Пожелание №${wishId} ещё не добавлено`;
           document.getElementById('error').style.display = 'block';
           return;
         }
 
-        // Сохраняем переносы строк
-        document.getElementById('wish').innerHTML = wishes[id - 1].replace(/\n/g, '<br>');
+        document.getElementById('wish-container').innerHTML = wishes[wishId - 1].replace(/\n/g, '<br>');
       } catch (err) {
         console.error(err);
         document.getElementById('error').textContent = '⚠️ Не удалось загрузить пожелания';
@@ -214,9 +247,41 @@
       }
     }
 
+    function initMusic() {
+      const audio = document.getElementById('bg-music');
+      const toggleBtn = document.getElementById('sound-toggle');
+      const icon = toggleBtn.querySelector('i');
+
+      function tryPlay() {
+        if (!musicPlayed) {
+          audio.volume = 0.25;
+          const playPromise = audio.play();
+          if (playPromise !== undefined) {
+            playPromise.catch(() => {}).then(() => {
+              musicPlayed = true;
+              icon.className = 'fas fa-volume-up';
+            });
+          }
+        }
+      }
+
+      document.body.addEventListener('click', tryPlay, { once: true });
+
+      toggleBtn.addEventListener('click', () => {
+        if (audio.paused) {
+          audio.play();
+          icon.className = 'fas fa-volume-up';
+        } else {
+          audio.pause();
+          icon.className = 'fas fa-volume-mute';
+        }
+      });
+    }
+
     window.addEventListener('load', () => {
       initGarland();
       loadWish();
+      initMusic();
       setInterval(createSnowflake, 250);
     });
   </script>
