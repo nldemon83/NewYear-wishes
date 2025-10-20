@@ -14,7 +14,7 @@
 
     html, body {
       height: 100%;
-      overflow: hidden; /* скрываем скролл всей страницы */
+      overflow: hidden;
     }
 
     body {
@@ -24,7 +24,6 @@
       color: #003366;
     }
 
-    /* Основной скроллируемый контейнер */
     #content {
       position: relative;
       height: 100vh;
@@ -44,26 +43,31 @@
       text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
       font-weight: bold;
       margin: 10px 0;
+      /* Плавное "дыхание" заголовка */
+      animation: breathe 6s infinite ease-in-out;
     }
 
-    /* Обёртка для пожелания с прокруткой */
+    @keyframes breathe {
+      0%, 100% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.03); opacity: 1; }
+    }
+
     #wish-container {
       width: 90%;
       max-width: 800px;
-      max-height: calc(100vh - 200px); /* оставляем место для заголовка и отступов */
+      max-height: calc(100vh - 200px);
       background: rgba(255, 255, 255, 0.65);
       border-radius: 16px;
       backdrop-filter: blur(4px);
       padding: 25px;
       overflow-y: auto;
-      -webkit-overflow-scrolling: touch; /* плавный скролл на iOS */
+      -webkit-overflow-scrolling: touch;
       text-align: center;
       font-size: 1.6em;
       line-height: 1.5;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
-    /* Стиль скроллбара (для десктопа) */
     #wish-container::-webkit-scrollbar {
       width: 8px;
     }
@@ -159,6 +163,20 @@
       z-index: 30;
       text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
     }
+
+    #countdown {
+      position: fixed;
+      bottom: 20px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      font-size: 1.4em;
+      font-weight: bold;
+      /* Зелёный цвет с тенью */
+      color: #00aa00;
+      text-shadow: 0 0 10px rgba(0, 200, 0, 0.6);
+      z-index: 25;
+    }
   </style>
 </head>
 <body>
@@ -166,7 +184,7 @@
     <source src="music.mp3" type="audio/mpeg">
   </audio>
 
-  <div id="sound-toggle" style="position:fixed;top:20px;right:20px;font-size:1.8em;color:#FFD700;cursor:pointer;z-index:30;">
+  <div id="sound-toggle">
     <i class="fas fa-volume-up"></i>
   </div>
 
@@ -182,6 +200,8 @@
     <div id="wish-container"></div>
     <div id="error" style="display:none;"></div>
   </div>
+
+  <div id="countdown"></div>
 
   <script>
     const COLORS = ['red', 'green', 'yellow', 'blue'];
@@ -278,11 +298,34 @@
       });
     }
 
+    function updateCountdown() {
+      const now = new Date();
+      let nextYear = now.getFullYear();
+      const nextNewYear = new Date(`January 1, ${nextYear + 1} 00:00:00`);
+
+      const diff = nextNewYear - now;
+
+      if (diff <= 0) {
+        document.getElementById('countdown').textContent = 'С Новым годом! 🎉';
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+      document.getElementById('countdown').textContent =
+        `До Нового года осталось: ${days}д ${hours}ч ${minutes}м ${seconds}с`;
+    }
+
     window.addEventListener('load', () => {
       initGarland();
       loadWish();
       initMusic();
       setInterval(createSnowflake, 250);
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
     });
   </script>
 </body>
