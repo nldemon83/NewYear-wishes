@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Новогоднее пожелание</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Great+Vibes&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -15,13 +16,9 @@
     html, body {
       height: 100%;
       overflow: hidden;
-    }
-
-    body {
-      background: #a0cfff;
-      font-family: 'Georgia', serif;
-      position: relative;
-      color: #003366;
+      background: #0d0f1e;
+      color: #ffffff;
+      font-family: 'Playfair Display', serif;
     }
 
     #content {
@@ -38,49 +35,174 @@
     h1 {
       text-align: center;
       padding: 15px 0;
-      font-size: 2.2em;
+      font-size: 2.6em;
       color: #FFD700;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-      font-weight: bold;
+      text-shadow: 0 0 12px rgba(255, 215, 0, 0.6);
+      font-family: 'Great Vibes', cursive;
+      font-weight: normal;
       margin: 10px 0;
-      /* Плавное "дыхание" заголовка */
       animation: breathe 6s infinite ease-in-out;
+      letter-spacing: 2px;
     }
 
     @keyframes breathe {
       0%, 100% { transform: scale(1); opacity: 0.9; }
-      50% { transform: scale(1.03); opacity: 1; }
+      50% { transform: scale(1.04); opacity: 1; }
     }
 
     #wish-container {
       width: 90%;
       max-width: 800px;
-      /* Уменьшена высота, чтобы не заходить на обратный отсчёт */
-      max-height: calc(100vh - 250px);
-      background: rgba(255, 255, 255, 0.65);
-      border-radius: 16px;
-      backdrop-filter: blur(4px);
-      padding: 25px;
+      max-height: calc(100vh - 480px); /* Увеличен отступ под кнопку */
+      background: rgba(10, 15, 30, 0.65);
+      border: 1px solid rgba(255, 215, 0, 0.2);
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      padding: 30px;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
       text-align: center;
-      font-size: 1.6em;
-      line-height: 1.5;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      font-size: 1.7em;
+      line-height: 1.6;
+      color: white;
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
     }
 
     #wish-container::-webkit-scrollbar {
-      width: 8px;
+      width: 10px;
     }
     #wish-container::-webkit-scrollbar-track {
-      background: rgba(255,255,255,0.3);
-      border-radius: 4px;
+      background: rgba(0,0,0,0.2);
+      border-radius: 5px;
     }
     #wish-container::-webkit-scrollbar-thumb {
       background: #FFD700;
-      border-radius: 4px;
+      border-radius: 5px;
     }
 
+    /* =============== VK SHARE BUTTON =============== */
+    #vk-share {
+      margin-top: 20px;
+      padding: 12px 24px;
+      background: linear-gradient(135deg, #4a76a8, #3d5a80);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.2em;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 0 10px rgba(74, 118, 168, 0.6);
+      transition: all 0.3s ease;
+      z-index: 20;
+    }
+    #vk-share:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5), 0 0 15px rgba(74, 118, 168, 0.8);
+    }
+    #vk-share i {
+      font-size: 1.4em;
+    }
+
+    /* =============== COUNTDOWN LABEL =============== */
+    #countdown-label {
+      position: fixed;
+      bottom: 110px;
+      width: 100%;
+      text-align: center;
+      font-size: 1.4em;
+      color: #FFD700;
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+      z-index: 24;
+      font-family: 'Playfair Display', serif;
+      letter-spacing: 1px;
+    }
+
+    /* =============== FLIP CLOCK =============== */
+    #flip-clock {
+      position: fixed;
+      bottom: 20px;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      z-index: 25;
+      font-family: 'Courier New', monospace;
+    }
+
+    .flip-unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 50px;
+    }
+
+    .flip-label {
+      text-align: center;
+      font-size: 0.8em;
+      color: #888;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .flip-card {
+      position: relative;
+      height: 72px;
+      width: 100%;
+      perspective: 200px;
+    }
+
+    .flip-card-inner {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    }
+
+    .flip-card.flipping .flip-card-inner {
+      transform: rotateX(-180deg);
+    }
+
+    .flip-card-front, .flip-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 6px;
+      font-size: 1.9em;
+      font-weight: bold;
+      background: rgba(10, 20, 40, 0.85);
+      color: #00ffaa;
+      border: 1px solid rgba(0, 200, 150, 0.3);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+
+    .flip-card-back {
+      transform: rotateX(180deg);
+      color: #00cc99;
+      background: rgba(5, 10, 25, 0.9);
+    }
+
+    .flip-separator {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8em;
+      color: #FFD700;
+      height: 72px;
+      margin: 0 4px;
+    }
+
+    /* =============== GARLAND =============== */
     .garland {
       position: fixed;
       top: 0;
@@ -99,7 +221,7 @@
       padding: 0 20px;
     }
     .top-lights { top: 10px; }
-    .bottom-lights { bottom: 10px; }
+    .bottom-lights { bottom: 140px; }
 
     .left-lights, .right-lights {
       position: absolute;
@@ -107,35 +229,48 @@
       display: flex;
       flex-direction: column;
       justify-content: space-around;
-      padding: 60px 0;
+      padding: 80px 0;
     }
     .left-lights { left: 10px; }
     .right-lights { right: 10px; }
 
     .bulb {
-      width: 12px;
-      height: 12px;
+      width: 14px;
+      height: 14px;
       border-radius: 50%;
-      background: white;
-      box-shadow: 0 0 6px 2px white;
+      background: #222;
+      box-shadow: 0 0 4px 1px #222;
     }
 
-    @keyframes blink-red { 0%,40%{background:white;box-shadow:0 0 6px 2px white;} 50%,100%{background:#ff3333;box-shadow:0 0 10px 4px #ff3333;} }
-    @keyframes blink-green { 0%,40%{background:white;box-shadow:0 0 6px 2px white;} 50%,100%{background:#33cc33;box-shadow:0 0 10px 4px #33cc33;} }
-    @keyframes blink-yellow { 0%,40%{background:white;box-shadow:0 0 6px 2px white;} 50%,100%{background:#ffcc00;box-shadow:0 0 10px 4px #ffcc00;} }
-    @keyframes blink-blue { 0%,40%{background:white;box-shadow:0 0 6px 2px white;} 50%,100%{background:#3366ff;box-shadow:0 0 10px 4px #3366ff;} }
+    @keyframes blink-red {
+      0%, 100% { background: #222; box-shadow: 0 0 4px 1px #222; }
+      50% { background: #ff4444; box-shadow: 0 0 12px 5px #ff4444; }
+    }
+    @keyframes blink-green {
+      0%, 100% { background: #222; box-shadow: 0 0 4px 1px #222; }
+      50% { background: #44ff44; box-shadow: 0 0 12px 5px #44ff44; }
+    }
+    @keyframes blink-yellow {
+      0%, 100% { background: #222; box-shadow: 0 0 4px 1px #222; }
+      50% { background: #ffdd33; box-shadow: 0 0 12px 5px #ffdd33; }
+    }
+    @keyframes blink-blue {
+      0%, 100% { background: #222; box-shadow: 0 0 4px 1px #222; }
+      50% { background: #4488ff; box-shadow: 0 0 12px 5px #4488ff; }
+    }
 
-    .bulb.red { animation: blink-red 1.8s infinite alternate; }
-    .bulb.green { animation: blink-green 1.8s infinite alternate; }
-    .bulb.yellow { animation: blink-yellow 1.8s infinite alternate; }
-    .bulb.blue { animation: blink-blue 1.8s infinite alternate; }
+    .bulb.red { animation: blink-red 1.6s infinite; }
+    .bulb.green { animation: blink-green 1.7s infinite; }
+    .bulb.yellow { animation: blink-yellow 1.8s infinite; }
+    .bulb.blue { animation: blink-blue 1.9s infinite; }
 
     .snowflake {
       position: absolute;
       top: -20px;
       color: white;
       font-size: 1.2em;
-      text-shadow: 0 0 5px rgba(255,255,255,0.9);
+      opacity: 0.85;
+      text-shadow: 0 0 6px rgba(255,255,255,0.9);
       user-select: none;
       z-index: 5;
       animation: fall linear forwards;
@@ -148,35 +283,26 @@
     #error {
       text-align: center;
       padding: 40px;
-      color: #d00;
+      color: #ff6666;
       font-size: 1.4em;
       max-width: 80%;
       margin: 0 auto;
+      text-shadow: 0 0 8px rgba(255,100,100,0.5);
     }
 
     #sound-toggle {
       position: fixed;
       top: 20px;
       right: 20px;
-      font-size: 1.8em;
+      font-size: 1.9em;
       color: #FFD700;
       cursor: pointer;
       z-index: 30;
-      text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+      text-shadow: 0 0 10px rgba(255,215,0,0.7);
+      transition: transform 0.2s;
     }
-
-    #countdown {
-      position: fixed;
-      bottom: 20px;
-      left: 0;
-      width: 100%;
-      text-align: center;
-      font-size: 1.4em;
-      font-weight: bold;
-      /* Зелёный цвет с тенью */
-      color: #00aa00;
-      text-shadow: 0 0 10px rgba(0, 200, 0, 0.6);
-      z-index: 25;
+    #sound-toggle:hover {
+      transform: scale(1.15);
     }
   </style>
 </head>
@@ -199,19 +325,79 @@
   <div id="content">
     <h1>С Новым годом!</h1>
     <div id="wish-container"></div>
+    <button id="vk-share" onclick="shareToVK()">
+      <i class="fab fa-vk"></i> Поделиться в ВКонтакте
+    </button>
     <div id="error" style="display:none;"></div>
   </div>
 
-  <div id="countdown"></div>
+  <div id="countdown-label">До Нового года осталось</div>
+
+  <div id="flip-clock">
+    <div class="flip-unit">
+      <div class="flip-label">дни</div>
+      <div class="flip-card" id="days-card">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">00</div>
+          <div class="flip-card-back">00</div>
+        </div>
+      </div>
+    </div>
+    <div class="flip-separator">:</div>
+    <div class="flip-unit">
+      <div class="flip-label">часы</div>
+      <div class="flip-card" id="hours-card">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">00</div>
+          <div class="flip-card-back">00</div>
+        </div>
+      </div>
+    </div>
+    <div class="flip-separator">:</div>
+    <div class="flip-unit">
+      <div class="flip-label">мин</div>
+      <div class="flip-card" id="minutes-card">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">00</div>
+          <div class="flip-card-back">00</div>
+        </div>
+      </div>
+    </div>
+    <div class="flip-separator">:</div>
+    <div class="flip-unit">
+      <div class="flip-label">сек</div>
+      <div class="flip-card" id="seconds-card">
+        <div class="flip-card-inner">
+          <div class="flip-card-front">00</div>
+          <div class="flip-card-back">00</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script>
     const COLORS = ['red', 'green', 'yellow', 'blue'];
     let musicPlayed = false;
 
+    function generateNonRepeatingColors(count, colors) {
+      const result = [];
+      let prev = -1;
+      for (let i = 0; i < count; i++) {
+        let next;
+        do {
+          next = Math.floor(Math.random() * colors.length);
+        } while (next === prev && colors.length > 1);
+        result.push(colors[next]);
+        prev = next;
+      }
+      return result;
+    }
+
     function createBulbs(container, count) {
+      const colorSequence = generateNonRepeatingColors(count, COLORS);
       for (let i = 0; i < count; i++) {
         const bulb = document.createElement('div');
-        bulb.classList.add('bulb', COLORS[Math.floor(Math.random() * COLORS.length)]);
+        bulb.classList.add('bulb', colorSequence[i]);
         bulb.style.animationDelay = `${Math.random() * 2}s`;
         container.appendChild(bulb);
       }
@@ -228,10 +414,12 @@
 
     function createSnowflake() {
       const snowflake = document.createElement('div');
-      snowflake.innerHTML = '❄';
+      const symbols = ['❄', '❅', '❆'];
+      snowflake.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
       snowflake.classList.add('snowflake');
       snowflake.style.left = `${Math.random() * 100}vw`;
       snowflake.style.fontSize = `${Math.random() * 1.4 + 0.6}em`;
+      snowflake.style.opacity = `${0.7 + Math.random() * 0.3}`;
       snowflake.style.animationDuration = `${Math.random() * 10 + 5}s`;
       document.body.appendChild(snowflake);
       setTimeout(() => {
@@ -299,15 +487,46 @@
       });
     }
 
+    // =============== VK SHARE ===============
+    function shareToVK() {
+      const url = window.location.href; // Сохраняет ?id=N
+      const shareUrl = `https://vk.com/share.php?url=${encodeURIComponent(url)}&title=Новогоднее пожелание&description=С Новым годом! ✨`;
+
+      // Открываем в попапе
+      const width = 600;
+      const height = 400;
+      const left = (screen.width - width) / 2;
+      const top = (screen.height - height) / 2;
+      window.open(shareUrl, 'vk_share', `width=${width},height=${height},left=${left},top=${top},resizable=no,scrollbars=no`);
+    }
+
+    // =============== FLIP CLOCK ===============
+    function pad(num) {
+      return num.toString().padStart(2, '0');
+    }
+
+    function updateFlipCard(cardEl, newValue) {
+      const front = cardEl.querySelector('.flip-card-front');
+      const back = cardEl.querySelector('.flip-card-back');
+      const oldValue = front.textContent;
+      if (oldValue === newValue) return;
+      back.textContent = newValue;
+      cardEl.classList.add('flipping');
+      setTimeout(() => {
+        front.textContent = newValue;
+        cardEl.classList.remove('flipping');
+      }, 300);
+    }
+
     function updateCountdown() {
       const now = new Date();
-      let nextYear = now.getFullYear();
-      const nextNewYear = new Date(`January 1, ${nextYear + 1} 00:00:00`);
-
+      const nextNewYear = new Date(`January 1, ${now.getFullYear() + 1} 00:00:00`);
       const diff = nextNewYear - now;
 
       if (diff <= 0) {
-        document.getElementById('countdown').textContent = 'С Новым годом! 🎉';
+        document.getElementById('countdown-label').style.display = 'none';
+        document.getElementById('flip-clock').innerHTML = 
+          '<div style="position:fixed;bottom:40px;width:100%;text-align:center;font-size:1.6em;color:#FFD700;text-shadow:0 0 12px rgba(255,215,0,0.8);">С Новым годом! 🎉</div>';
         return;
       }
 
@@ -316,8 +535,10 @@
       const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-      document.getElementById('countdown').textContent =
-        `До Нового года осталось: ${days}д ${hours}ч ${minutes}м ${seconds}с`;
+      updateFlipCard(document.getElementById('days-card'), pad(days));
+      updateFlipCard(document.getElementById('hours-card'), pad(hours));
+      updateFlipCard(document.getElementById('minutes-card'), pad(minutes));
+      updateFlipCard(document.getElementById('seconds-card'), pad(seconds));
     }
 
     window.addEventListener('load', () => {
