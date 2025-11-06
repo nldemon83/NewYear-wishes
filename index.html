@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
   <title>Новогоднее пожелание</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Great+Vibes&display=swap" rel="stylesheet">
@@ -13,9 +13,18 @@
       box-sizing: border-box;
     }
 
+    /* 🔑 КЛЮЧЕВОЕ ИСПРАВЛЕНИЕ: фиксированный viewport */
     html, body {
+      width: 100%;
       height: 100%;
       overflow: hidden;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: 0;
+      padding: 0;
       background: #0d0f1e;
       color: #ffffff;
       font-family: 'Playfair Display', serif;
@@ -232,6 +241,7 @@
     .bulb.yellow { animation: blink-yellow 1.8s infinite; }
     .bulb.blue { animation: blink-blue 1.9s infinite; }
 
+    /* =============== SNOWFLAKES — безопасное позиционирование =============== */
     .snowflake {
       position: absolute;
       top: -20px;
@@ -242,10 +252,14 @@
       user-select: none;
       z-index: 5;
       animation: fall linear forwards;
+      /* Гарантируем, что не выйдет за край */
+      left: 0;
     }
 
     @keyframes fall {
-      to { transform: translateY(105vh) rotate(360deg); }
+      to {
+        transform: translateY(105vh) rotate(360deg);
+      }
     }
 
     #error {
@@ -369,7 +383,6 @@
     </div>
   </div>
 
-  <!-- Кнопка сторис — в правом нижнем углу -->
   <button id="vk-share" onclick="shareToVKStory()" aria-label="Поделиться в сторис ВКонтакте">
     <i class="fab fa-vk"></i>
   </button>
@@ -403,7 +416,6 @@
     }
 
     function initGarland() {
-      const isMobile = window.innerWidth < 768;
       const topBottomCount = Math.max(8, Math.floor(window.innerWidth / 70));
       const leftRightCount = Math.max(6, Math.floor(window.innerHeight / 80));
       createBulbs(document.getElementById('top'), topBottomCount);
@@ -417,7 +429,8 @@
       const symbols = ['❄', '❅', '❆'];
       snowflake.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
       snowflake.classList.add('snowflake');
-      snowflake.style.left = `${Math.random() * 100}vw`;
+      // 🔑 Ограничение по горизонтали: от 5% до 95%
+      snowflake.style.left = `${5 + Math.random() * 90}vw`;
       snowflake.style.fontSize = `${Math.random() * 1.2 + 0.5}em`;
       snowflake.style.opacity = `${0.6 + Math.random() * 0.3}`;
       snowflake.style.animationDuration = `${Math.random() * 8 + 4}s`;
@@ -487,20 +500,15 @@
       });
     }
 
-    // =============== VK STORY ===============
     function shareToVKStory() {
-      // ЗАМЕНИ ЭТОТ URL НА СВОЙ РЕАЛЬНЫЙ БАННЕР ДЛЯ СТОРИС (1080x1920)
       const ogImageUrl = 'https://via.placeholder.com/1080x1920/0d0f1e/FFD700?text=С+Новым+Годом!';
-
       const url = encodeURIComponent(window.location.href);
       const text = encodeURIComponent('С Новым годом! ✨');
       const image = encodeURIComponent(ogImageUrl);
-
       const storyIntent = `vkstory://create?link=${url}&text=${text}&background_image=${image}`;
       const fallbackUrl = `https://vk.com/share.php?url=${url}&title=${text}&image=${image}&description=Поделитесь этим пожеланием в сторис ВКонтакте!`;
 
       window.location.href = storyIntent;
-
       setTimeout(() => {
         if (!document.hidden) {
           window.open(fallbackUrl, '_blank', 'width=600,height=400');
@@ -508,7 +516,6 @@
       }, 1000);
     }
 
-    // =============== FLIP CLOCK ===============
     function pad(num) {
       return num.toString().padStart(2, '0');
     }
