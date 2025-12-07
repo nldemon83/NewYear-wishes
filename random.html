@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="utf-8">
   <title>Случайное пожелание</title>
-  <style>
-    body {
-      background: #1a2b3c;
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      height: 10
-    }
+  <script>
+    // Генерируем случайный id от 1 до 42
+    const randomId = Math.floor(Math.random() * 42) + 1;
+    // Редирект на основную страницу с этим id
+    window.location.href = './?id=' + randomId;
+  </script>
+</head>
+<body>
+  <p>Перенаправление...</p>
+</body>
+</html>
